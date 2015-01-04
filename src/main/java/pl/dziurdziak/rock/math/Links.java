@@ -1,11 +1,13 @@
 package pl.dziurdziak.rock.math;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
 import org.la4j.matrix.Matrix;
 import pl.dziurdziak.rock.dao.Cluster;
 import pl.dziurdziak.rock.dao.Point;
 
 import java.util.List;
+import java.util.Set;
 
 public class Links<T extends Point<? super T>> {
 
@@ -32,6 +34,10 @@ public class Links<T extends Point<? super T>> {
 
     public void add(Cluster<T> first, Cluster<T> second, int value) {
         linkValues.put(first, second, value);
+    }
+
+    public Set<Cluster<T>> getClusters() {
+        return ImmutableSet.copyOf(linkValues.rowKeySet());
     }
 
 }

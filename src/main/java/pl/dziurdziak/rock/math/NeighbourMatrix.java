@@ -13,14 +13,23 @@ public class NeighbourMatrix<T extends Point<? super T>> {
     private Matrix matrix;
     private Matrix secondPower;
 
-    public NeighbourMatrix(List<T> points, NeighbourFunction<T> neighbourFunction) {
+    public NeighbourMatrix(List<T> points, NeighbourFunction<T> neighbourFunction, double goodness) {
         this.points = points;
-        this.matrix = createMatrix();
+        this.matrix = createMatrix(neighbourFunction, goodness);
     }
 
-    private Matrix createMatrix() {
-        // TODO
-        return null;
+    private Matrix createMatrix(NeighbourFunction<T> neighbourFunction, double goodness) {
+        Matrix calculatedMatrix = new Basic2DMatrix(points.size(), points.size());
+        for (int i=0; i<points.size(); i++) {
+            for (int j=0; j<points.size(); j++) {
+                if (i == j) {
+                    calculatedMatrix.set(i, j, 0);
+                } else {
+                    calculatedMatrix.set(i, j, neighbourFunction.apply(points.get(i), points.get(j), goodness) ? 1.0 : 0.0);
+                }
+            }
+        }
+        return calculatedMatrix;
     }
 
     public List<T> getInitialPoints() {

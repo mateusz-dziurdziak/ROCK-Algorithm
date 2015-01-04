@@ -1,6 +1,6 @@
 package pl.dziurdziak.rock.dao;
 
-public interface DataSetFunction<T extends Point> {
+public interface DataSetFunction<T extends Point<? super T>> {
 
     double apply(double goodness);
 

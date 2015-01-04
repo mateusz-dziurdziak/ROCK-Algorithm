@@ -6,13 +6,13 @@ import pl.dziurdziak.rock.dao.NeighbourFunction;
 import pl.dziurdziak.rock.dao.Point;
 import pl.dziurdziak.rock.dao.PointDao;
 import pl.dziurdziak.rock.dao.impl.GoodnessFunction;
-import pl.dziurdziak.rock.math.GlobalHeap;
+import pl.dziurdziak.rock.math.ClusterQueue;
 import pl.dziurdziak.rock.math.Links;
 import pl.dziurdziak.rock.math.LocalHeap;
-import pl.dziurdziak.rock.math.LocalHeapQueue;
 import pl.dziurdziak.rock.math.NeighbourMatrix;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,36 +28,36 @@ public abstract class RockEngineImpl<T extends Point<? super T>> implements Rock
         List<T> points = dao.getRandomPoints((int) (dao.count() * 0.1));
         List<Cluster<T>> clusters = points.stream().map(this::pointToCluster).collect(Collectors.toList());
 
-        NeighbourMatrix neighbourMatrix = new NeighbourMatrix(points, getNeighbourFunction());
-        Links links = new Links(neighbourMatrix, clusters);
+        NeighbourMatrix<T> neighbourMatrix = new NeighbourMatrix<>(points, getNeighbourFunction(), 0.8); // goodness
+        Links<T> links = new Links<>(neighbourMatrix, clusters);
 
-        List<LocalHeap<T>> localHeaps =  clusters.stream().map(cluster -> buildLocalHeap(cluster, links, getGoodnessFunction()))
-                .collect(Collectors.toList());
-        LocalHeapQueue q = new LocalHeapQueue(localHeaps);
+        Map<Cluster<T>, LocalHeap<T>> q =  clusters.stream().map(cluster -> buildLocalHeap(cluster, links, getGoodnessFunction()))
+                .collect(Collectors.toMap(LocalHeap::getHeapCluster, (l) -> l));
 
-        GlobalHeap<T> globalHeap = new GlobalHeap<>(clusters, localHeaps);
+        ClusterQueue<T> globalHeap = initializeGlobalHeap(clusters, q);
 
-        while (globalHeap.size() > clustersCount) {
+        while (globalHeap.size() > clustersCount
+                && globalHeap.getMaxValue() != Double.MIN_VALUE) {
             Cluster<T> u = globalHeap.getMax();
-            Cluster<T> v = q.getByCluster(u).getMax();
+            Cluster<T> v = q.get(u).getMax();
             globalHeap.delete(v);
             globalHeap.delete(u);
 
             Cluster<T> w = u.merge(v);
-            localHeaps.add(buildLocalHeap(w, links, getGoodnessFunction()));
+            q.put(w, buildLocalHeap(w, links, getGoodnessFunction()));
 
-            Set<Cluster<T>> connectedClusters = Sets.union(q.getByCluster(u).getAll(), q.getByCluster(v).getAll());
+            Set<Cluster<T>> connectedClusters = Sets.union(q.get(u).getAll(), q.get(v).getAll());
             for (Cluster<T> x: connectedClusters) {
                 links.add(x, w, links.getLinkCount(x, u) + links.getLinkCount(x, v));
-                q.getByCluster(x).delete(u);
-                q.getByCluster(x).delete(v);
+                q.get(x).delete(u);
+                q.get(x).delete(v);
 
-                q.getByCluster(x).add(w);
-                q.getByCluster(w).add(x);
+                q.get(x).add(w);
+                q.get(w).add(x);
 
-                globalHeap.update(x, q.getByCluster(x).getMaxValue());
+                globalHeap.update(x, q.get(x).getMaxValue());
             }
-            globalHeap.add(w, q.getByCluster(w).getMaxValue());
+            globalHeap.add(w, q.get(w).getMaxValue());
         }
 
         // TODO
@@ -72,9 +72,22 @@ public abstract class RockEngineImpl<T extends Point<? super T>> implements Rock
 
     protected abstract GoodnessFunction<T> getGoodnessFunction();
 
-    private LocalHeap<T> buildLocalHeap(Cluster<T> cluster, Links links, GoodnessFunction<T> goodnessFunction) {
+    private LocalHeap<T> buildLocalHeap(Cluster<T> cluster, Links<T> links, GoodnessFunction<T> goodnessFunction) {
         // TODO
         return null;
+    }
+
+    public ClusterQueue<T> initializeGlobalHeap(List<Cluster<T>> clusters, Map<Cluster<T>, LocalHeap<T>> q) {
+        ClusterQueue<T> clusterQueue = new ClusterQueue<>();
+        for(Cluster<T> cluster : clusters) {
+            if (q.containsKey(cluster)) {
+                clusterQueue.add(cluster, q.get(cluster).getMaxValue());
+            } else {
+                clusterQueue.add(cluster, Double.MIN_VALUE);
+            }
+        }
+
+        return clusterQueue;
     }
 
 }

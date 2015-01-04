@@ -1,6 +1,6 @@
 package pl.dziurdziak.rock.dao;
 
-public interface Cluster<T extends Point> {
+public interface Cluster<T extends Point<? super T>> {
 
     void addPoint(T point);
 

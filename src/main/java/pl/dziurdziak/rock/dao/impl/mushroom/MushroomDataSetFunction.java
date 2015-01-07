@@ -6,7 +6,7 @@ public class MushroomDataSetFunction implements DataSetFunction<MushroomPoint> {
 
     @Override
     public double apply(double goodness) {
-        return 0;
+        return 1;
     }
 
 }

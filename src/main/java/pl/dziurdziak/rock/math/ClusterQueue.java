@@ -30,13 +30,19 @@ public class ClusterQueue<T extends Point<? super T>> {
         heapElements.add(heapElement);
     }
 
-    public void delete(Cluster<T> cluster) {
+    public boolean delete(Cluster<T> cluster) {
+        int preSize = size();
         heapElements.removeIf(he -> he.cluster.equals(cluster));
+        return preSize != size();
     }
 
     public void update(Cluster<T> x, double value) {
         delete(x);
         add(x, value);
+    }
+
+    public boolean contains(Cluster<T> x) {
+        return heapElements.stream().filter(he -> he.cluster.equals(x)).collect(Collectors.toList()).size() > 0;
     }
 
     public Set<Cluster<T>> getAll() {

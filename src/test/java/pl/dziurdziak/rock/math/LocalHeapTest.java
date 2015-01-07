@@ -43,7 +43,7 @@ public class LocalHeapTest {
 
     @Test
     public void testAdd() {
-        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(0);
+        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(1);
         when(goodnessFunction.calculate(anyObject(), anyObject(), anyObject())).thenReturn(0.0);
 
         Cluster<TestPoint> first = mock(Cluster.class);
@@ -59,7 +59,7 @@ public class LocalHeapTest {
 
     @Test
     public void testOrderByFunction() {
-        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(0);
+        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(1);
         when(goodnessFunction.calculate(anyObject(), anyObject(), anyObject())).thenReturn(0.0, -1.0, 1.0);
 
         Cluster<TestPoint> first = mock(Cluster.class);
@@ -76,7 +76,7 @@ public class LocalHeapTest {
 
     @Test
     public void testDelete() {
-        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(0);
+        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(1);
         when(goodnessFunction.calculate(anyObject(), anyObject(), anyObject())).thenReturn(0.0);
 
         Cluster<TestPoint> first = mock(Cluster.class);
@@ -94,7 +94,7 @@ public class LocalHeapTest {
 
     @Test
     public void testOrderAfterDelete() {
-        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(0);
+        when(links.getLinkCount(anyObject(), anyObject())).thenReturn(1);
         when(goodnessFunction.calculate(anyObject(), anyObject(), anyObject())).thenReturn(0.0, 2.0, 1.0);
 
         Cluster<TestPoint> first = mock(Cluster.class);

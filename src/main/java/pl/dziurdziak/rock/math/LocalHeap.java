@@ -29,4 +29,12 @@ public class LocalHeap<T extends Point<? super T>> extends ClusterQueue<T> {
         }
     }
 
+    @Override
+    public double getMaxValue() {
+        if (size() > 0) {
+            return super.getMaxValue();
+        } else {
+            return Double.MIN_VALUE;
+        }
+    }
 }

@@ -25,7 +25,7 @@ public class NeighbourMatrix<T extends Point<? super T>> {
                 if (i == j) {
                     calculatedMatrix.set(i, j, 0);
                 } else {
-                    calculatedMatrix.set(i, j, neighbourFunction.apply(points.get(i), points.get(j), goodness) ? 1.0 : 0.0);
+                    calculatedMatrix.set(i, j, neighbourFunction.apply(points.get(i), points.get(j)) ? 1.0 : 0.0);
                 }
             }
         }
@@ -34,6 +34,10 @@ public class NeighbourMatrix<T extends Point<? super T>> {
 
     public List<T> getInitialPoints() {
         return this.points;
+    }
+
+    public Matrix getMatrix() {
+        return matrix.copy();
     }
 
     public Matrix secondPower() {

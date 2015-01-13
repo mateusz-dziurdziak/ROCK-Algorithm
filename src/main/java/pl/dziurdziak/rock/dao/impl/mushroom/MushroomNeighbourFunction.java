@@ -4,12 +4,25 @@ import pl.dziurdziak.rock.dao.NeighbourFunction;
 
 import java.util.Objects;
 
+/**
+ * Funkcja okreslająca czy dwa typy grzybów są "sąsiadami"
+ */
 public class MushroomNeighbourFunction implements NeighbourFunction<MushroomPoint> {
 
-    private final double goodnes;
+    /**
+     * Wymagane "podobieństwo" typów
+     *
+     * Rozumiane jako liczbę 0-1 określającą liczbę takich samych atrybutów do wszystkich atrybutów
+     */
+    private final double goodness;
 
-    public MushroomNeighbourFunction(double goodnes) {
-        this.goodnes = goodnes;
+    /**
+     * Konstruktor
+     *
+     * @param goodness {@link #goodness}
+     */
+    public MushroomNeighbourFunction(double goodness) {
+        this.goodness = goodness;
     }
 
     @Override
@@ -22,7 +35,7 @@ public class MushroomNeighbourFunction implements NeighbourFunction<MushroomPoin
             }
         }
 
-        return (double) common / MushroomPointMemoryDao.ATTRIBUTES.size() >= goodnes;
+        return (double) common / MushroomPointMemoryDao.ATTRIBUTES.size() >= goodness;
     }
 
 }

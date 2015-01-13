@@ -23,6 +23,7 @@ public class MushroomPointMemoryDaoTest {
     public void testGetRandom() {
         MushroomPointMemoryDao dao = new MushroomPointMemoryDao(new File("dataSets/mushroom/agaricus-lepiota.data"));
         assertThat(dao.getRandomPoints(100)).hasSize(100);
+        assertThat(dao.getRandomPoints(7000)).hasSize(7000);
     }
 
     @Test(expected = IllegalArgumentException.class)

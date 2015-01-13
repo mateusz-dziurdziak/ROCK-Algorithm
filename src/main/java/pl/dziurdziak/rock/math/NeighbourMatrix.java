@@ -7,21 +7,50 @@ import pl.dziurdziak.rock.dao.Point;
 
 import java.util.List;
 
+/**
+ * Macierz sasiedztwa pomiędzy punktami
+ *
+ * @param <T> typ puntów
+ */
 public class NeighbourMatrix<T extends Point<? super T>> {
 
-    private List<T> points;
+    /**
+     * Lista punktów
+     */
+    private List<T> initialPoints;
+
+    /**
+     * Macierz sąsiedztwa punktów
+     */
     private Matrix matrix;
+
+    /**
+     * Druga potęga macierzy sąsiedztwa punktów
+     */
     private Matrix secondPower;
 
-    public NeighbourMatrix(List<T> points, NeighbourFunction<T> neighbourFunction, double goodness) {
-        this.points = points;
-        this.matrix = createMatrix(neighbourFunction, goodness);
+    /**
+     * Tworzy macierz sąsiedztwa punktów
+     *
+     * @param points            {@link #initialPoints}
+     * @param neighbourFunction funkcja sąsiedztwa
+     */
+    public NeighbourMatrix(List<T> points, NeighbourFunction<T> neighbourFunction) {
+        this.initialPoints = points;
+        this.matrix = createMatrix(points, neighbourFunction);
     }
 
-    private Matrix createMatrix(NeighbourFunction<T> neighbourFunction, double goodness) {
+    /**
+     * Tworzy macierz na podstawie listy punktów i funkcji sąsiedztwa
+     *
+     * @param points            lista punktów
+     * @param neighbourFunction funkcja sąsiedztwa
+     * @return macierz sąsiedztwa
+     */
+    private Matrix createMatrix(List<T> points, NeighbourFunction<T> neighbourFunction) {
         Matrix calculatedMatrix = new Basic2DMatrix(points.size(), points.size());
-        for (int i=0; i<points.size(); i++) {
-            for (int j=0; j<points.size(); j++) {
+        for (int i = 0; i < points.size(); i++) {
+            for (int j = i; j < points.size(); j++) {
                 if (i == j) {
                     calculatedMatrix.set(i, j, 0);
                 } else {
@@ -29,17 +58,33 @@ public class NeighbourMatrix<T extends Point<? super T>> {
                 }
             }
         }
+
+        for (int i = 0; i < points.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                calculatedMatrix.set(i, j, calculatedMatrix.get(j, i));
+            }
+        }
+
         return calculatedMatrix;
     }
 
+    /**
+     * @return lista punktów, która została wykorzystana do obliczenia macierzy
+     */
     public List<T> getInitialPoints() {
-        return this.points;
+        return this.initialPoints;
     }
 
+    /**
+     * @return {@link #matrix}
+     */
     public Matrix getMatrix() {
         return matrix.copy();
     }
 
+    /**
+     * @return {@link #secondPower}
+     */
     public Matrix secondPower() {
         if (secondPower == null) {
             secondPower = matrix.power(2);

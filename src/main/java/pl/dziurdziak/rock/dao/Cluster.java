@@ -2,6 +2,10 @@ package pl.dziurdziak.rock.dao;
 
 import java.util.List;
 
+/**
+ * Grupa połączonych punktów
+ * @param <T> typ punktu
+ */
 public interface Cluster<T extends Point<? super T>> {
 
     /**

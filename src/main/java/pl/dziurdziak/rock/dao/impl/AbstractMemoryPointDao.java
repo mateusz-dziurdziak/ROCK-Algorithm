@@ -7,23 +7,28 @@ import pl.dziurdziak.rock.dao.impl.mushroom.MushroomPoint;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- *
- * @param <T>
+ * DAO przechowujące punkty w pamięci
+ * @param <T> typ punktu
  */
 public abstract class AbstractMemoryPointDao<T extends Point<? super T>> implements PointDao<T> {
 
+    /**
+     * Lista wszystkich punktów
+     */
     private List<T> points;
 
+    /**
+     * Konstruktor tworzący DAO poprzez wczytanie danych z pliku.
+     * @param file plik z danymi
+     */
     public AbstractMemoryPointDao(File file) {
         try {
             points = ImmutableList.copyOf(readPoints(file));
@@ -44,12 +49,24 @@ public abstract class AbstractMemoryPointDao<T extends Point<? super T>> impleme
         checkArgument(numberOfPoints <= points.size());
         Random random = new Random();
 
-        Set<Integer> ids = new HashSet<>(numberOfPoints);
-        while(ids.size() < numberOfPoints) {
+        Set<Integer> ids = new HashSet<>(Math.min(numberOfPoints, points.size() - numberOfPoints));
+        while(ids.size() < Math.min(numberOfPoints, points.size() - numberOfPoints)) {
             ids.add(random.nextInt(points.size()));
         }
 
-        return ids.stream().map(id -> points.get(id)).collect(Collectors.toList());
+        int i = 0;
+        List<T> returnPoints = new ArrayList<>(numberOfPoints);
+        for (T point : points) {
+            if (numberOfPoints >= points.size() / 2
+                    && !ids.contains(i)) {
+                returnPoints.add(point);
+            } else if (numberOfPoints < points.size() / 2
+                    && ids.contains(i)){
+                returnPoints.add(point);
+            }
+            i++;
+        }
+        return returnPoints;
     }
 
     @Override

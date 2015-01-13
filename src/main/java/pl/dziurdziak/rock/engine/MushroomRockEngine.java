@@ -8,16 +8,24 @@ import pl.dziurdziak.rock.dao.impl.mushroom.*;
 
 import java.io.File;
 
-public class MushroomRockEngine extends AbstractRockEngine<MushroomPoint> {
+public class MushroomRockEngine extends RockEngine<MushroomPoint> {
+
+    private final double goodness;
+    private final String filePath;
+
+    public MushroomRockEngine(double goodness, String filePath) {
+        this.goodness = goodness;
+        this.filePath = filePath;
+    }
 
     @Override
     protected NeighbourFunction<MushroomPoint> getNeighbourFunction() {
-        return new MushroomNeighbourFunction(0.8);
+        return new MushroomNeighbourFunction(goodness);
     }
 
     @Override
     protected PointDao<MushroomPoint> getDao() {
-        return new MushroomPointMemoryDao(new File("dataSets/mushroom/agaricus-lepiota.data"));
+        return new MushroomPointMemoryDao(new File(filePath));
     }
 
     @Override
@@ -27,7 +35,7 @@ public class MushroomRockEngine extends AbstractRockEngine<MushroomPoint> {
 
     @Override
     protected GoodnessFunction<MushroomPoint> getGoodnessFunction() {
-        return new GoodnessFunction<>(new MushroomDataSetFunction(), 0.8);
+        return new GoodnessFunction<>(new MushroomDataSetFunction(), goodness);
     }
 
 }

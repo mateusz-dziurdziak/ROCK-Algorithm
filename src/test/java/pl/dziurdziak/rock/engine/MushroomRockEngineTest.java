@@ -7,7 +7,7 @@ public class MushroomRockEngineTest {
 
     @Test
     public void test() {
-        RockEngine<MushroomPoint> rockEngine = new MushroomRockEngine();
-        rockEngine.calculateClusters(20);
+        RockEngine<MushroomPoint> rockEngine = new MushroomRockEngine(0.8, "dataSets/mushroom/agaricus-lepiota.data");
+        rockEngine.calculateClusters(20, 200);
     }
 }

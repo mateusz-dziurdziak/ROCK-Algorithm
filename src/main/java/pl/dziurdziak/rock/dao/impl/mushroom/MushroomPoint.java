@@ -2,10 +2,8 @@ package pl.dziurdziak.rock.dao.impl.mushroom;
 
 import com.google.common.collect.ImmutableMap;
 import pl.dziurdziak.rock.dao.Point;
-import pl.dziurdziak.rock.dao.impl.CategoricalPoint;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Punkt symbolizujący gatunek grzyba
@@ -31,11 +29,6 @@ public class MushroomPoint implements Point<MushroomPoint> {
     public MushroomPoint(MushroomClass clazz, Map<String, String> attributesToValuesMap) {
         this.attributesToValuesMap = ImmutableMap.copyOf(attributesToValuesMap);
         this.clazz = clazz;
-    }
-
-    // TODO
-    public Set<String> getAttributes() {
-        return attributesToValuesMap.keySet();
     }
 
     /**

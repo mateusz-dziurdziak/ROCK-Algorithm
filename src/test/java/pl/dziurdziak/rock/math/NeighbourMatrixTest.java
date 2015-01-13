@@ -29,7 +29,7 @@ public class NeighbourMatrixTest {
         when(neighbourFunction.apply(third, first)).thenReturn(false);
         when(neighbourFunction.apply(third, second)).thenReturn(true);
 
-        NeighbourMatrix<TestPoint> neighbourMatrix = new NeighbourMatrix<>(testPoints, neighbourFunction, 0.0);
+        NeighbourMatrix<TestPoint> neighbourMatrix = new NeighbourMatrix<>(testPoints, neighbourFunction);
         Matrix matrix = neighbourMatrix.getMatrix();
 
         assertEquals(3, matrix.rows());
@@ -68,7 +68,7 @@ public class NeighbourMatrixTest {
         when(neighbourFunction.apply(fourth, second)).thenReturn(true);
         when(neighbourFunction.apply(fourth, third)).thenReturn(true);
 
-        NeighbourMatrix<TestPoint> neighbourMatrix = new NeighbourMatrix<>(testPoints, neighbourFunction, 0.0);
+        NeighbourMatrix<TestPoint> neighbourMatrix = new NeighbourMatrix<>(testPoints, neighbourFunction);
         Matrix secondPower = neighbourMatrix.secondPower();
 
         assertEquals(4, secondPower.rows());

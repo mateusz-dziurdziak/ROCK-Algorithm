@@ -10,4 +10,5 @@ public class MushroomRockEngineTest {
         RockEngine<MushroomPoint> rockEngine = new MushroomRockEngine(0.8, "dataSets/mushroom/agaricus-lepiota.data");
         rockEngine.calculateClusters(20, 200);
     }
+
 }

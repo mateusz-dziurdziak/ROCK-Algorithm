@@ -127,5 +127,5 @@ public class App {
         printWriter.println(ON_COMMA.join(cluster.size(), edible >= poisonous ? "e" : "p", edible, poisonous, wrongType));
         return wrongType;
     }
-    
+
 }

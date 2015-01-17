@@ -4,8 +4,8 @@ import pl.dziurdziak.rock.dao.Cluster;
 import pl.dziurdziak.rock.dao.NeighbourFunction;
 import pl.dziurdziak.rock.dao.PointDao;
 import pl.dziurdziak.rock.dao.impl.ClusterImpl;
+import pl.dziurdziak.rock.dao.impl.ConstantDataSetFunction;
 import pl.dziurdziak.rock.dao.impl.GoodnessFunction;
-import pl.dziurdziak.rock.dao.impl.supermarket.SupermarketDataSetFunction;
 import pl.dziurdziak.rock.dao.impl.supermarket.SupermarketNeighbourFunction;
 import pl.dziurdziak.rock.dao.impl.supermarket.SupermarketPoint;
 import pl.dziurdziak.rock.dao.impl.supermarket.SupermarketPointMemoryDao;
@@ -41,7 +41,7 @@ public class SupermarketRockEngine extends RockEngine<SupermarketPoint> {
 
     @Override
     protected GoodnessFunction<SupermarketPoint> getGoodnessFunction() {
-        return new GoodnessFunction<>(new SupermarketDataSetFunction(), goodness);
+        return new GoodnessFunction<>(new ConstantDataSetFunction<>(1), goodness);
     }
 
 }

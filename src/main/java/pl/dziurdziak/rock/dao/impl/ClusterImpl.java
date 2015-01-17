@@ -8,6 +8,10 @@ import pl.dziurdziak.rock.dao.impl.mushroom.MushroomPoint;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Domyślna imlementacja grupy punktów
+ * @param <T> typ punktu
+ */
 public class ClusterImpl<T extends Point<? super T>> implements Cluster<T> {
 
     /**

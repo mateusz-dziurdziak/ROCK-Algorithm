@@ -37,6 +37,13 @@ public abstract class AbstractMemoryPointDao<T extends Point<? super T>> impleme
         }
     }
 
+    /**
+     * Odczytuje listę punktów z pliku
+     *
+     * @param file plik
+     * @return lista punktów
+     * @throws IOException
+     */
     protected abstract List<T> readPoints(File file) throws IOException;
 
     @Override

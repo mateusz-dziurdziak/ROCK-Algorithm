@@ -3,8 +3,12 @@ package pl.dziurdziak.rock.engine;
 import pl.dziurdziak.rock.dao.Cluster;
 import pl.dziurdziak.rock.dao.NeighbourFunction;
 import pl.dziurdziak.rock.dao.PointDao;
+import pl.dziurdziak.rock.dao.impl.ClusterImpl;
+import pl.dziurdziak.rock.dao.impl.ConstantDataSetFunction;
 import pl.dziurdziak.rock.dao.impl.GoodnessFunction;
-import pl.dziurdziak.rock.dao.impl.mushroom.*;
+import pl.dziurdziak.rock.dao.impl.mushroom.MushroomNeighbourFunction;
+import pl.dziurdziak.rock.dao.impl.mushroom.MushroomPoint;
+import pl.dziurdziak.rock.dao.impl.mushroom.MushroomPointMemoryDao;
 
 import java.io.File;
 
@@ -30,12 +34,12 @@ public class MushroomRockEngine extends RockEngine<MushroomPoint> {
 
     @Override
     protected Cluster<MushroomPoint> pointToCluster(MushroomPoint point) {
-        return new MushroomCluster(point);
+        return new ClusterImpl(point);
     }
 
     @Override
     protected GoodnessFunction<MushroomPoint> getGoodnessFunction() {
-        return new GoodnessFunction<>(new MushroomDataSetFunction(), goodness);
+        return new GoodnessFunction<>(new ConstantDataSetFunction<>(1), goodness);
     }
 
 }

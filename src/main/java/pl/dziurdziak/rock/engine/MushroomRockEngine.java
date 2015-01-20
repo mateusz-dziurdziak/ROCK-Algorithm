@@ -39,7 +39,7 @@ public class MushroomRockEngine extends RockEngine<MushroomPoint> {
 
     @Override
     protected GoodnessFunction<MushroomPoint> getGoodnessFunction() {
-        return new GoodnessFunction<>(new ConstantDataSetFunction<>(1), goodness);
+        return new GoodnessFunction<>(new ConstantDataSetFunction<MushroomPoint>(1), goodness);
     }
 
 }

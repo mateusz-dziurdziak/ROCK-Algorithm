@@ -41,7 +41,7 @@ public class SupermarketRockEngine extends RockEngine<SupermarketPoint> {
 
     @Override
     protected GoodnessFunction<SupermarketPoint> getGoodnessFunction() {
-        return new GoodnessFunction<>(new ConstantDataSetFunction<>(1), goodness);
+        return new GoodnessFunction<>(new ConstantDataSetFunction<SupermarketPoint>(1), goodness);
     }
 
 }
